@@ -1,0 +1,58 @@
+# NXCopilot 特征映射表
+features:
+  - feature_type: "Extrude"
+    parameters:
+      StartValue: { type: float }
+      EndValue: { type: float }
+    dependencies:
+      - { type: "Sketch", required: true }
+
+  - feature_type: "Revolve"
+    parameters:
+      StartAngle: { type: float }
+      EndAngle: { type: float }
+    dependencies:
+      - { type: "Sketch", required: true }
+
+  - feature_type: "Hole"
+    parameters:
+      Diameter: { type: float }
+      Depth: { type: float }
+
+  - feature_type: "EdgeBlend"
+    parameters:
+      Radius: { type: float }
+
+  - feature_type: "Chamfer"
+    parameters:
+      FirstDist: { type: float }
+
+  - feature_type: "Shell"
+    parameters:
+      Thickness: { type: float }
+
+  - feature_type: "Pocket"
+    parameters:
+      Depth: { type: float }
+
+  - feature_type: "Draft"
+    parameters:
+      Angle: { type: float }
+
+  - feature_type: "CircularPattern"
+    parameters:
+      Count: { type: int }
+      Angle: { type: float }
+
+  - feature_type: "RectangularPattern"
+    parameters:
+      CountX: { type: int }
+      SpacingX: { type: float }
+      CountY: { type: int }
+      SpacingY: { type: float }
+
+  - feature_type: "Mirror"
+    parameters: {}
+
+  - feature_type: "Sketch"
+    parameters: {}
