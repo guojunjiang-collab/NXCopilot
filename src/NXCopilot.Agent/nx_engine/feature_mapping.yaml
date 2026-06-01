@@ -1,58 +1,243 @@
-# NXCopilot 特征映射表
+# NXCopilot 特征映射表 — 覆盖 25 种常用 NX 特征
+# 每种特征定义: 类型名、NXOpen 类、参数、依赖、创建模板名
+
 features:
+  # ==================== 实体特征 ====================
   - feature_type: "Extrude"
+    nxopen_class: "NXOpen.Features.Extrude"
     parameters:
-      StartValue: { type: float }
-      EndValue: { type: float }
+      StartValue: { type: float, unit: "MilliMeter", default: 0 }
+      EndValue: { type: float, unit: "MilliMeter", default: 20 }
     dependencies:
       - { type: "Sketch", required: true }
+    creation_template: "extrude"
 
   - feature_type: "Revolve"
+    nxopen_class: "NXOpen.Features.Revolve"
     parameters:
-      StartAngle: { type: float }
-      EndAngle: { type: float }
+      StartAngle: { type: float, unit: "Degree", default: 0 }
+      EndAngle: { type: float, unit: "Degree", default: 360 }
     dependencies:
       - { type: "Sketch", required: true }
+      - { type: "DatumAxis", required: true }
+    creation_template: "revolve"
 
+  - feature_type: "SweepAlongGuide"
+    nxopen_class: "NXOpen.Features.Sweep"
+    parameters: {}
+    dependencies:
+      - { type: "Section", required: true, label: "SectionCurve" }
+      - { type: "Guide", required: true, label: "GuideCurve" }
+    creation_template: "sweep"
+
+  - feature_type: "Loft"
+    nxopen_class: "NXOpen.Features.Loft"
+    parameters:
+      AlignmentMethod: { type: string, default: "ByParameters" }
+    dependencies:
+      - { type: "Section", required: true, multiple: true }
+    creation_template: "loft"
+
+  # ==================== 孔/槽 ====================
   - feature_type: "Hole"
+    nxopen_class: "NXOpen.Features.Hole"
     parameters:
-      Diameter: { type: float }
-      Depth: { type: float }
-
-  - feature_type: "EdgeBlend"
-    parameters:
-      Radius: { type: float }
-
-  - feature_type: "Chamfer"
-    parameters:
-      FirstDist: { type: float }
-
-  - feature_type: "Shell"
-    parameters:
-      Thickness: { type: float }
+      Diameter: { type: float, unit: "MilliMeter", default: 10 }
+      Depth: { type: float, unit: "MilliMeter", default: 20 }
+      TipAngle: { type: float, unit: "Degree", default: 118 }
+    dependencies: []
+    creation_template: "hole"
 
   - feature_type: "Pocket"
+    nxopen_class: "NXOpen.Features.Pocket"
     parameters:
-      Depth: { type: float }
+      Depth: { type: float, unit: "MilliMeter", default: 10 }
+    dependencies:
+      - { type: "Sketch", required: true }
+    creation_template: "pocket"
 
-  - feature_type: "Draft"
+  - feature_type: "Slot"
+    nxopen_class: "NXOpen.Features.Slot"
     parameters:
-      Angle: { type: float }
+      Width: { type: float, unit: "MilliMeter", default: 5 }
+      Depth: { type: float, unit: "MilliMeter", default: 10 }
+    dependencies:
+      - { type: "Face", required: true }
+    creation_template: "slot"
 
+  - feature_type: "Groove"
+    nxopen_class: "NXOpen.Features.Groove"
+    parameters:
+      Diameter: { type: float, unit: "MilliMeter", default: 20 }
+      Width: { type: float, unit: "MilliMeter", default: 5 }
+    dependencies:
+      - { type: "Face", required: true }
+    creation_template: "groove"
+
+  # ==================== 圆角/倒角 ====================
+  - feature_type: "EdgeBlend"
+    nxopen_class: "NXOpen.Features.EdgeBlend"
+    parameters:
+      Radius: { type: float, unit: "MilliMeter", default: 3 }
+    dependencies: []
+    creation_template: "edge_blend"
+
+  - feature_type: "Chamfer"
+    nxopen_class: "NXOpen.Features.Chamfer"
+    parameters:
+      FirstDist: { type: float, unit: "MilliMeter", default: 2 }
+      SecondDist: { type: float, unit: "MilliMeter", default: 2 }
+    dependencies: []
+    creation_template: "chamfer"
+
+  - feature_type: "FaceBlend"
+    nxopen_class: "NXOpen.Features.FaceBlend"
+    parameters:
+      Radius: { type: float, unit: "MilliMeter", default: 5 }
+    dependencies: []
+    creation_template: "face_blend"
+
+  - feature_type: "VariableRadiusBlend"
+    nxopen_class: "NXOpen.Features.EdgeBlend"
+    parameters:
+      StartRadius: { type: float, unit: "MilliMeter", default: 2 }
+      EndRadius: { type: float, unit: "MilliMeter", default: 5 }
+    dependencies: []
+    creation_template: "variable_blend"
+
+  # ==================== 壳/筋 ====================
+  - feature_type: "Shell"
+    nxopen_class: "NXOpen.Features.Shell"
+    parameters:
+      Thickness: { type: float, unit: "MilliMeter", default: 2 }
+    dependencies: []
+    creation_template: "shell"
+
+  - feature_type: "Rib"
+    nxopen_class: "NXOpen.Features.Rib"
+    parameters:
+      Thickness: { type: float, unit: "MilliMeter", default: 3 }
+    dependencies:
+      - { type: "Sketch", required: true }
+    creation_template: "rib"
+
+  - feature_type: "Stiffener"
+    nxopen_class: "NXOpen.Features.Stiffener"
+    parameters:
+      Thickness: { type: float, unit: "MilliMeter", default: 2 }
+    dependencies:
+      - { type: "Sketch", required: true }
+    creation_template: "stiffener"
+
+  - feature_type: "Boss"
+    nxopen_class: "NXOpen.Features.Boss"
+    parameters:
+      Diameter: { type: float, unit: "MilliMeter", default: 15 }
+      Height: { type: float, unit: "MilliMeter", default: 10 }
+    dependencies: []
+    creation_template: "boss"
+
+  # ==================== 阵列/镜像 ====================
   - feature_type: "CircularPattern"
+    nxopen_class: "NXOpen.Features.CircularPattern"
     parameters:
-      Count: { type: int }
-      Angle: { type: float }
+      Count: { type: int, default: 6 }
+      Angle: { type: float, unit: "Degree", default: 360 }
+    dependencies:
+      - { type: "Feature", required: true, label: "SourceFeature" }
+      - { type: "DatumAxis", required: true, label: "RotationAxis" }
+    creation_template: "circular_pattern"
 
   - feature_type: "RectangularPattern"
+    nxopen_class: "NXOpen.Features.RectangularPattern"
     parameters:
-      CountX: { type: int }
-      SpacingX: { type: float }
-      CountY: { type: int }
-      SpacingY: { type: float }
+      CountX: { type: int, default: 3 }
+      SpacingX: { type: float, unit: "MilliMeter", default: 20 }
+      CountY: { type: int, default: 1 }
+      SpacingY: { type: float, unit: "MilliMeter", default: 0 }
+    dependencies:
+      - { type: "Feature", required: true, label: "SourceFeature" }
+    creation_template: "rectangular_pattern"
 
   - feature_type: "Mirror"
+    nxopen_class: "NXOpen.Features.Mirror"
     parameters: {}
+    dependencies:
+      - { type: "Feature", required: true, label: "SourceFeature" }
+      - { type: "DatumPlane", required: true, label: "MirrorPlane" }
+    creation_template: "mirror"
 
-  - feature_type: "Sketch"
+  # ==================== 布尔运算 ====================
+  - feature_type: "Unite"
+    nxopen_class: "NXOpen.Features.Boolean"
     parameters: {}
+    dependencies:
+      - { type: "Body", required: true, label: "Target" }
+      - { type: "Body", required: true, label: "Tool" }
+    creation_template: "boolean_unite"
+
+  - feature_type: "Subtract"
+    nxopen_class: "NXOpen.Features.Boolean"
+    parameters: {}
+    dependencies:
+      - { type: "Body", required: true, label: "Target" }
+      - { type: "Body", required: true, label: "Tool" }
+    creation_template: "boolean_subtract"
+
+  - feature_type: "Intersect"
+    nxopen_class: "NXOpen.Features.Boolean"
+    parameters: {}
+    dependencies:
+      - { type: "Body", required: true, label: "Target" }
+      - { type: "Body", required: true, label: "Tool" }
+    creation_template: "boolean_intersect"
+
+  # ==================== 变换 ====================
+  - feature_type: "Draft"
+    nxopen_class: "NXOpen.Features.Draft"
+    parameters:
+      Angle: { type: float, unit: "Degree", default: 3 }
+    dependencies: []
+    creation_template: "draft"
+
+  - feature_type: "Offset"
+    nxopen_class: "NXOpen.Features.Offset"
+    parameters:
+      Distance: { type: float, unit: "MilliMeter", default: 5 }
+    dependencies: []
+    creation_template: "offset"
+
+  - feature_type: "Scale"
+    nxopen_class: "NXOpen.Features.Scale"
+    parameters:
+      ScaleFactor: { type: float, default: 1.5 }
+    dependencies: []
+    creation_template: "scale"
+
+  # ==================== 基准 ====================
+  - feature_type: "DatumPlane"
+    nxopen_class: "NXOpen.Features.DatumPlane"
+    parameters:
+      Offset: { type: float, unit: "MilliMeter", default: 0 }
+    dependencies: []
+    creation_template: "datum_plane"
+
+  - feature_type: "DatumAxis"
+    nxopen_class: "NXOpen.Features.DatumAxis"
+    parameters: {}
+    dependencies: []
+    creation_template: "datum_axis"
+
+  - feature_type: "DatumCsys"
+    nxopen_class: "NXOpen.Features.DatumCsys"
+    parameters: {}
+    dependencies: []
+    creation_template: "datum_csys"
+
+  # ==================== 草图 ====================
+  - feature_type: "Sketch"
+    nxopen_class: "NXOpen.Sketch"
+    parameters: {}
+    dependencies:
+      - { type: "DatumPlane", required: true }
+    creation_template: "sketch"
